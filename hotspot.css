@@ -1,0 +1,42 @@
+.responsive {
+   padding-top:40px;
+   margin: auto;
+  width: 100%;
+  height: auto;
+}
+
+header{
+	color: orange;
+	font-weight: 900;
+	text-align: center;
+}
+
+p{
+	color: blue;
+	font-weight: 900;
+	text-align: center;
+}
+
+h4{
+	color: red;
+	font-weight: 900;
+	text-align: center;
+}
+
+
+.btn-primary{
+	background-color: red;
+	font-size:5.5vw;
+	position: center;
+	
+}
+.btn-block{
+	background-color: red;
+	color:#ffffff;
+	text-align: center;
+	font-weight:900;
+	/* font-size:5.0vw; */
+	/* position: relative; */
+	
+	
+}
