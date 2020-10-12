@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en" ng-app="PhotoFunia">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+   <title>PlayTechnical</title>
+
+   <link rel="stylesheet" href="build/styles.css"/>
+
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+   <meta name="theme-color" content="#ff6421">
+
+   <style>
+      [ng-cloak] { display: none; }
+   </style>
+</head>
+
+<body ng-controller="Main">
+
+<div class="preloader">
+   <div class="preloader-logo"></div>
+   <div class="preloader-container">
+      <div class="preloader-text"></div>
+   </div>
+</div>
+
+<div class="connection" ng-controller="Connection" ng-class="{'-showed': showed}" ng-cloak>
+   <div class="connection-container" ng-if="showed">
+      <div class="connection-title" ng-bind="l.labels.no_connection"></div>
+      <div class="connection-message" ng-bind="l.messages.no_connection"></div>
+      <a class="button button--white" ng-click="reload()" ng-bind="l.buttons.try_again"></a>
+   </div>
+</div>
+
+<div class="main-container" ng-cloak>
+   <div ng-controller="General" class="page page-general page--tabs"
+        ng-class="getClasses(PAGE_GENERAL)">
+      <div class="page-wrapper">
+         <div class="topbar topbar--both">
+            <div class="header">
+               <div class="header-title" m="headings.app_name">PhotoFunia</div>
+               <!--<div class="header-logo"></div>-->
+            </div>
+
+            <div class="tabs tabs--overflow">
+               <div class="tabs-container js-tabs-general">
+                  <div class="tabs-el" ng-repeat="tab in tabs track by $index"
+                       ng-class="tabClass($index)" ng-click="openTab($index)">
+                     <div class="tabs-el-title" mm="tab.name"></div>
+                     <div class="tabs-el-border"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="content content--tabs">
+            <div class="content-wrapper">
+               <div class="content-tab" ng-controller="Categories" ng-show="tabActive(0)">
+                  <div class="l-wrapper">
+                     <ul class="l-container">
+                        <li class="l -listable" ng-repeat="cat in categories track by $index"
+                            ng-click="openCategory(cat)" tabindex="1">
+                           <span class="l-count" ng-bind="::cat.count"></span>
+                           <span class="l-new" ng-if="::cat.count_new"
+                                 ng-bind="'+'+cat.count_new"></span>
+                           <span class="l-title" ng-bind="::cat.title"></span>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+
+               <!--<div class="content-tab" ng-controller="Favorites"
+                    ng-show="tabActive(1)" scrolled2="showMore()">
+                  <div ng-if="effects.length" effects="effects"></div>
+                  <div ng-if="!effects.length" class="content-message">
+                     <div class="content-message-title" m="labels.no_effects"></div>
+                     <div class="content-message-description" m="messages.add_favorite"></div>
+                  </div>
+               </div>-->
+
+               <div class="content-tab" ng-controller="Search"
+                    ng-show="tabActive(1)" scrolled2="showMore()">
+
+                  <div class="content-search -pickable" tabindex="2">
+                     <input type="text" m="headings.search"
+                            ng-model="searchText" ng-change="search()">
+                  </div>
+
+                  <div effects="effects" ng-if="effects.length"></div>
+
+                  <div ng-if="!effects.length && searchText" class="content-message">
+                     <div class="content-message-description" m="messages.no_effects"></div>
+                  </div>
+               </div>
+
+               <div class="content-tab" ng-controller="Help" ng-show="tabActive(2)">
+                  <div class="l-wrapper">
+                     <ul class="l-container">
+                        <li class="l -listable" ng-repeat="item in items track by $index"
+                            ng-click="openPage(item.page)" tabindex="1">
+                           <span class="l-title" mm="item.name"></span>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div ng-controller="Effects" ng-class="getClasses(PAGE_EFFECTS)"
+        class="page page-effects page--tabs">
+      <div class="page-wrapper">
+         <div class="topbar topbar--both">
+            <div class="header">
+               <div class="header-title" ng-bind="category.title"></div>
+            </div>
+
+            <div class="tabs tabs--overflow">
+               <div class="tabs-container">
+                  <div class="tabs-el" ng-class="tabClass(0)" ng-click="openTab(0)">
+                     <div class="tabs-el-title" m="tabs.new"></div>
+                     <div class="tabs-el-border"></div>
+                  </div>
+
+                  <div class="tabs-el" ng-class="tabClass(1)" ng-click="openTab(1)">
+                     <div class="tabs-el-title" m="tabs.popular"></div>
+                     <div class="tabs-el-border"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="content content--single">
+            <div class="content-wrapper" scrolled2="showMore()">
+               <div effects="effects" ng-if="effects.length"></div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+   <div ng-controller="Effect" class="page page-effect page--single page--footer"
+        ng-class="getClasses(PAGE_EFFECT)">
+      <div class="page-wrapper">
+         <div class="topbar topbar--header">
+            <div class="header">
+               <div class="header-title" ng-bind="effect.title"></div>
+            </div>
+         </div>
+
+         <div class="content content--single">
+            <div class="content-wrapper" ng-include="'templates/effect.html'"></div>
+         </div>
+      </div>
+   </div>
+
+   <div ng-controller="Examples" class="page page-examples page--single page--popup"
+        ng-class="getClasses(PAGE_EXAMPLES)">
+      <div class="page-wrapper">
+         <div class="topbar topbar--header">
+            <div class="header">
+               <div class="header-title">
+                  <div ng-if="!images.length">&nbsp;</div>
+                  
+                  <div ng-if="images.length">
+                     <span ng-bind="position + 1"></span>
+                     <span m="labels.of"></span>
+                     <span ng-bind="images.length"></span>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="content content--tabs" ng-if="images.length">
+            <div class="content-wrapper">
+               <div class="content-tab content-tab--image">
+                  <div class="gallery-image-container" ng-repeat="image in images"
+                     ng-if="position === $index">
+                     <img ng-src="{{ image }}" animation-load>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div ng-controller="Result" class="page page-result page--popup "
+        ng-class="getClasses(PAGE_RESULT)">
+      <div class="page-wrapper">
+         <div class="topbar topbar--header">
+            <div class="header">
+               <div class="header-title" m="headings.loading"
+                    ng-if="phase !== PHASE_READY"></div>
+
+               <div class="header-title" m="headings.result"
+                    ng-if="phase === PHASE_READY"></div>
+            </div>
+         </div>
+
+         <div class="content">
+            <div class="content-wrapper content-wrapper--noscroll">
+               <div class="result">
+                  <div class="result-image-container"
+                       ng-if="(openedPage(PAGE_RESULT) || showing) && phase === PHASE_READY">
+                     <img class="result-image" animation-load pinch-zoom>
+                  </div>
+                  <div class="result-loader" ng-if="phase !== PHASE_READY && loadingInited">
+                     <div class="gif-spinner -dark"></div>
+                  </div>
+                  <div class="result-loader-bg" ng-if="loadingInited"
+                       ng-class="{'-hidden': phase === PHASE_READY}"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="context-menu" ng-controller="ContextMenu"
+        ng-class="{'-showed': opened, '-active': active}">
+      <div class="context-menu-overlay" ng-click="closeContextMenu()"></div>
+      <div class="context-menu-container">
+         <div class="context-menu-item-container"
+              ng-if="!item.hide || !item.hide()"
+              ng-class="getClass($index)" ng-repeat="item in getItems()">
+            <div class="context-menu-item" ng-click="handle($index)">
+               <span ng-if="item.name.m" mm="item.name.m"></span>
+               <span ng-if="!item.name.m" ng-bind="item.name"></span>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="notifications" ng-controller="Notifications">
+      <div class="notifications-toast" ng-if="toast" ng-class="{'-showed': toastShowed}">
+         <span class="notifications-toast-text" ng-bind="toast.text"></span>
+      </div>
+
+      <div class="notifications-popup" ng-if="popup" ng-class="{'-showed': popupShowed}">
+         <div class="notifications-popup-overlay" ng-click="closePopup()"></div>
+         <div class="notifications-popup-container">
+            <div class="notifications-popup-header" m="headings.app_name"></div>
+            <div class="notifications-popup-content" ng-bind="popup.text"></div>
+         </div>
+      </div>
+   </div>
+
+   <div class="soft-keys" ng-class="softKeysClass()" ng-if="showButtons">
+      <div class="soft-keys--key soft-keys--left"
+           ng-bind="softKeyText('left')" ng-click="softKeyClick($event, 'left')"></div>
+
+      <div class="soft-keys--key soft-keys--center"
+           ng-bind="softKeyText('center')" ng-click="softKeyClick($event, 'center')"></div>
+
+      <div class="soft-keys--key soft-keys--right"
+           ng-bind="softKeyText('right')" ng-click="softKeyClick($event, 'right')"></div>
+   </div>
+
+</div>
+
+<script src="kaiads.min.js"></script>
+<script src="build/scripts.js"></script>
+
+</body>
+</html>

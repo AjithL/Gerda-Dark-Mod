@@ -1,0 +1,64 @@
+{
+    "version": "3.0",
+	"name": "Gerda Dark Mode",
+    "display": "Gerda Dark Mode",
+	"description": "KaiOS App Store For Download And Install KaiOS Apps",
+	"fullscreen": true,
+	"ime_default_softkey_bar": true,
+	"cursor": true,
+    "type": "certified",
+	"origin": "app://appstorekaiosappstore",
+	"launch_path": "/index2.html",
+    "theme_color": "#FFFFFF",
+    "background_color": "#FFFFFF",
+    "chrome": {
+    "statusbar": "overlap"
+  },
+	"developer": {
+		"name": "PlayTEchnicalTamil",
+		"url": "https://www.youtube.com/channel/UC0llY7gbGf-4HtLi4S1o6ZQ?sub_confirmation=1"
+	},
+	"default_locale": "en",
+	"locales": {
+		"en-US": {
+			"name": "Gerda Dark Mode"
+		}
+	},
+	"icons": {
+	    "56":"/icon/app56.png",
+        "84":"/icon/app84.png",
+        "112":"/icon/app112.png"
+		
+	},
+  "permissions": {
+    "device-storage:sdcard" : {
+      "description": "Required for accessing app manifest files",
+      "access": "readwrite"
+    },
+    "device-storage:sdcard1" : {
+      "description": "Required for accessing app manifest files",
+      "access": "readwrite"
+    },
+    "themeable":{"name": "themeable"},
+    "systemXHR": { "description": "This permission is require to call web api" },
+    "browser": {},
+    "serviceworker": {},
+	"softkey": {},
+	"settings":{"access":"readwrite"},
+    "device-storage:apps":{ "access": "readwrite" },
+    "webapps-manage":{},
+    "power":{}
+  },
+  "activities": {
+    "index": {
+      "href": "./index.html",
+      "disposition": "inline",
+      "returnValue": true
+    },
+    "kaius": {
+      "href": "./kaius.html",
+      "disposition": "inline",
+      "returnValue": true
+    }
+  }
+}
